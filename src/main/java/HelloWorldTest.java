@@ -1,7 +1,11 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.Test;
 import io.restassured.response.Response;
+
+import java.sql.SQLOutput;
+
 public class HelloWorldTest {
     @Test
     public void testHelloWorld(){
@@ -26,4 +30,19 @@ public class HelloWorldTest {
         String messages = response.get("messages.message[1]").toString();
         System.out.println(messages);
     }
+    @Test
+    public void homeWorkRedirectTest(){
+        Response response = RestAssured
+                .given()
+                .redirects()
+                .follow(false)
+                .when()
+                .get("https://playground.learnqa.ru/api/long_redirect")
+                .andReturn();
+
+        String locationHeader = response.getHeader("Location");
+        System.out.println(locationHeader);
+
+    }
+
 }

@@ -44,5 +44,35 @@ public class HelloWorldTest {
         System.out.println(locationHeader);
 
     }
+    @Test
+    public void homeWorkLongRedirectTest(){
+        int i = 0;
+        String baseUrl = "https://playground.learnqa.ru/api/long_redirect";
+        int statusCode = 0;
+
+
+        while (statusCode != 200){
+
+            i = ++i;
+            Response response = RestAssured
+                    .given()
+                    .redirects()
+                    .follow(false)
+                    .when()
+                    .get(baseUrl)
+                    .andReturn();
+
+            String locationHeader = response.getHeader("Location");
+            statusCode = response.getStatusCode();
+
+            baseUrl = locationHeader;
+            if(locationHeader != null) {
+                System.out.println(locationHeader);
+            }
+        }
+        i =--i;
+        System.out.println(i);
+
+    }
 
 }

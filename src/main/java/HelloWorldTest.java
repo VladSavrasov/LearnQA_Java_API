@@ -1,10 +1,14 @@
 import io.restassured.RestAssured;
-import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
-import org.junit.jupiter.api.Test;
 import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
+import org.junit.jupiter.api.Test;
+import java.util.concurrent.*;
 
-import java.sql.SQLOutput;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsMapContaining.hasKey;
+
+
 
 public class HelloWorldTest {
     @Test
@@ -72,6 +76,38 @@ public class HelloWorldTest {
         }
         i =--i;
         System.out.println(i);
+
+    }
+    @Test
+    public void homeWorkTokenTest() throws InterruptedException {
+        JsonPath response = (JsonPath) RestAssured
+                .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+        String token = response.get("token");
+        int seconds = response.get("seconds");
+
+
+        JsonPath responseOne = RestAssured
+                .given()
+                .queryParam("token", token)
+                .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
+                .jsonPath();
+        String status = responseOne.get("status");
+        responseOne.prettyPrint();
+        if(status.equals("Job is NOT ready")){
+
+            TimeUnit time = TimeUnit.SECONDS;
+
+            time.sleep(seconds);
+                ValidatableResponse responseNew = RestAssured
+                        .given()
+                        .queryParam("token", token)
+                        .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
+                        .then()
+                        .body("status",equalTo("Job is ready"))
+                        .body("$",hasKey("result"));
+
+    }
 
     }
 

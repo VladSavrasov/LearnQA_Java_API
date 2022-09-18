@@ -93,7 +93,6 @@ public class HelloWorldTest {
                 .get(" https://playground.learnqa.ru/ajax/api/longtime_job")
                 .jsonPath();
         String status = responseOne.get("status");
-        responseOne.prettyPrint();
         if(status.equals("Job is NOT ready")){
 
             TimeUnit time = TimeUnit.SECONDS;

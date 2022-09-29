@@ -1,13 +1,19 @@
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class HelloWorldTest {
@@ -108,6 +114,20 @@ public class HelloWorldTest {
 
     }
 
+    }
+    @ParameterizedTest
+    @ValueSource(strings = "SSixTeenCapitals" )
+    public void homeWorkFifteenCapitalsCheck(String name){
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("name", name);
+        JsonPath response =RestAssured
+                .given()
+                .queryParams(queryParams)
+                .get("https://playground.learnqa.ru/api/hello")
+                .jsonPath();
+        String answer = response.getString("answer");
+        String expectedName =(name.length()>15) ? name : "badrequest";
+        assertEquals("Hello, "+ expectedName, answer, "parametr less then 15 capitals");
     }
 
 }

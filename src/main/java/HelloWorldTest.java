@@ -1,5 +1,4 @@
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -7,13 +6,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
 
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 
 public class HelloWorldTest {
@@ -129,5 +132,19 @@ public class HelloWorldTest {
         String expectedName =(name.length()>15) ? name : "badrequest";
         assertEquals("Hello, "+ expectedName, answer, "parametr less then 15 capitals");
     }
-
+    @Test
+    public void homeWorkCookiesCheck(){
+        Response response =RestAssured
+                .get("https://playground.learnqa.ru/api/homework_cookie")
+                .andReturn();
+        Map<String, String> cookie = response.getCookies();
+        String key = cookie.keySet().toString().replace("[", "")
+                .replace("]", "");
+        String value = cookie.values().toString().replace("[", "")
+                .replace("]", "");
+        Map<String, String> expectedData = Collections.singletonMap(key, value);
+            assertTrue(cookie.containsKey(key),"response doesn't contain such cookie");
+            assertTrue(cookie.containsValue(value),"response doesn't contain such value");
+        assertEquals(expectedData,response.getCookies(),"cookie doesn't exist");
+    }
 }

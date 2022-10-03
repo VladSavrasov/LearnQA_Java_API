@@ -1,4 +1,5 @@
 import io.restassured.RestAssured;
+import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
@@ -146,5 +147,17 @@ public class HelloWorldTest {
             assertTrue(cookie.containsKey(key),"response doesn't contain such cookie");
             assertTrue(cookie.containsValue(value),"response doesn't contain such value");
         assertEquals(expectedData,response.getCookies(),"cookie doesn't exist");
+    }
+    @Test
+    public void homeWorkHeadersCheck(){
+        Response response =RestAssured
+                .get("https://playground.learnqa.ru/api/homework_header")
+                .andReturn();
+        Headers header = response.getHeaders();
+        System.out.println(header);
+        String secretHeader = response.getHeader("x-secret-homework-header");
+
+        assertTrue(header.hasHeaderWithName("x-secret-homework-header"),"response doesn't contain such Header");
+        assertEquals(secretHeader,response.getHeader("x-secret-homework-header"),"response header does not exist");
     }
 }

@@ -28,7 +28,7 @@ public class UserRegTest extends BaseTestCase {
        userData = DataGenerator.getRegistrationData(userData);
 
         Response responsePostReg = apiCoreRequests
-                .createPostRequest(url,userData);
+                .makePostRequest(url,userData);
        Assertions.assertTextEquals(responsePostReg, expectedText );
     }
 
@@ -44,7 +44,7 @@ public class UserRegTest extends BaseTestCase {
             userData = DataGenerator.getRegistrationData(userData);
 
             Response responsePostReg = apiCoreRequests
-                    .createPostRequest(url, userData);
+                    .makePostRequest(url, userData);
             Assertions.assertTextEqualsNew(responsePostReg, key);
         }
     }
@@ -60,7 +60,7 @@ public class UserRegTest extends BaseTestCase {
         userData = DataGenerator.getRegistrationData(userData);
 
         Response responsePostReg = apiCoreRequests
-                .createPostRequest(url,userData);
+                .makePostRequest(url,userData);
         if(username.equals("v")){
             String expectedText = "The value of 'username' field is too short";
             Assertions.assertTextEquals(responsePostReg, expectedText );

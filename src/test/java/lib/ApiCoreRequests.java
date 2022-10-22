@@ -44,7 +44,7 @@ public class ApiCoreRequests {
                 .andReturn();
 
     }
-    @Step("make Post request")
+    /*@Step("make Post request")
     public Response createPostRequest(String url,Map userData){
         return given()
                 .filter(new AllureRestAssured())
@@ -52,5 +52,12 @@ public class ApiCoreRequests {
                 .post(url)
                 .andReturn();
 
+    }*/
+    @Step("make GET request with token and cookie, and userId")
+    public Response makeGetRequest(String url,int userId){
+        return given()
+                .filter(new AllureRestAssured())
+                .get(url+ userId)
+                .andReturn();
     }
 }

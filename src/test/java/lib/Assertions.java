@@ -27,6 +27,12 @@ public class Assertions {
     public static void assertJsonHasNoField(Response Response, String unexpectedFieldName) {
         Response.then().assertThat().body("$", not(hasKey(unexpectedFieldName)));
     }
+    public static void assertJsonHasNoFields(Response Response, String[] expectedFieldNames) {
+        for (String expectedFileName : expectedFieldNames) {
+            Assertions.assertJsonHasNoField(Response, expectedFileName);
+        }
+    }
+
 
     public static void assertTextEquals(Response Response, String expectedText) {
         assertEquals(expectedText, Response.asString(), "Response text is not as expected");

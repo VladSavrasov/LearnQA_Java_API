@@ -74,7 +74,7 @@ public class ApiCoreRequests {
                 .andReturn();
     }
 
-    @Step("make GET request with token and cookie, and userId")
+    @Step("make PUT request with token and cookie, and userId")
     public Response makePutRequest(String url, Map editData, int userId, String cookie, String header) {
         return given()
                 .filter(new AllureRestAssured())
@@ -92,6 +92,16 @@ public class ApiCoreRequests {
                 .header(new Header("x-csrf-token", token))
                 .cookie("auth_sid", cookie)
                 .get(url + id)
+                .andReturn();
+    }
+
+    @Step("make DELETE request with token and cookie, and userId")
+    public Response makeDeleteRequest(String url, int userId, String cookie, String header) {
+        return given()
+                .filter(new AllureRestAssured())
+                .header(new Header("x-csrf-token", header))
+                .cookie("auth_sid", cookie)
+                .delete(url + userId)
                 .andReturn();
     }
 }
